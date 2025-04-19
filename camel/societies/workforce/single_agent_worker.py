@@ -13,7 +13,9 @@
 # ========= Copyright 2023-2024 @ CAMEL-AI.org. All Rights Reserved. =========
 from __future__ import annotations
 
+import csv
 import json
+import os
 from typing import Any, List
 
 from colorama import Fore
@@ -90,6 +92,24 @@ class SingleAgentWorker(Worker):
             f"\n{color}{task_result.content}{Fore.RESET}\n======",
             delay=0.005,
         )
+
+        # save into csv file with adding (format: {self})
+        log_dir = "/Users/ttfish/Project/MultiAgentLog/demo/output"
+        csv_file_path = os.path.join(log_dir, "meeting_response.csv")
+        try:
+            file_exists = os.path.isfile(csv_file_path)
+            with open(
+                csv_file_path, mode="a", newline="", encoding="utf-8"
+            ) as csv_file:
+                csv_writer = csv.writer(csv_file)
+                if not file_exists:
+                    csv_writer.writerow(['role', 'content'])
+                csv_writer.writerow([str(self), task_result.content])
+        except Exception as e:
+            print(
+                f"{Fore.RED}Error occurred while writing to CSV file:"
+                f"\n{e}{Fore.RESET}"
+            )
 
         if task_result.failed:
             return TaskState.FAILED
