@@ -94,7 +94,7 @@ class SingleAgentWorker(Worker):
         )
 
         # save into csv file with adding (format: {self})
-        log_dir = "/Users/ttfish/Project/MultiAgentLog/demo/output"
+        log_dir = "/Users/ttfish/Project/MultiAgentLog/demo/meeting_logs"
         csv_file_path = os.path.join(log_dir, "meeting_response.csv")
         try:
             file_exists = os.path.isfile(csv_file_path)
