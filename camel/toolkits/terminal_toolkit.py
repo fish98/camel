@@ -72,6 +72,7 @@ class TerminalToolkit(BaseToolkit):
         use_shell_mode: bool = True,
         clone_current_env: bool = False,
         safe_mode: bool = True,
+        log_path: str = None,
     ):
         super().__init__(timeout=timeout)
         self.shell_sessions = shell_sessions or {}
@@ -87,6 +88,7 @@ class TerminalToolkit(BaseToolkit):
 
         self.python_executable = sys.executable
         self.is_macos = platform.system() == 'Darwin'
+        self.log_path = log_path
 
         atexit.register(self.__del__)
 
@@ -127,7 +129,8 @@ class TerminalToolkit(BaseToolkit):
         terminal.
         """
 
-        self.log_file = os.path.join(os.getcwd(), "camel_terminal.txt")
+        # self.log_file = os.path.join(os.getcwd(), "camel_terminal.txt")s
+        self.log_file = os.path.join(self.log_path, "camel_terminal.txt")
 
         if os.path.exists(self.log_file):
             with open(self.log_file, "w") as f:
